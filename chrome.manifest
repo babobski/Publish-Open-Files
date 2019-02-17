@@ -1,0 +1,3 @@
+content pof content/
+overlay chrome://komodo/content/komodo.xul chrome://pof/content/overlay.xul
+overlay chrome://komodo/content/commandsOverlay.xul chrome://pof/content/commandsOverlay.xul
