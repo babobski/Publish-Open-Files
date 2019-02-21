@@ -10,14 +10,19 @@ if (typeof(extensions.pof) === 'undefined') extensions.pof = {
 	var self = this;
 	this.publishOpenFiles = () => {
 		var tabsView = document.getElementById('tabbed-view'),
-			tabs = tabsView.getElementsByTagName('tab');
+			tabs = tabsView.getElementsByTagName('tab'),
+			file;
 		
 		for (var i = 0; i < tabs.length; i++) {
 			var $tab = tabs[i],
 				status = $tab.getAttribute('file_publishingStatus');
-			if (status === 'edited') {
-				var file = tabs[i].tooltipText;
+			if (status === 'edited' || status === 'added') {
+				file = tabs[i].tooltipText;
 				ko.publishing.push(ko.uriparse.localPathToURI(file));
+			}
+			if (status === 'conflict') {
+				file = tabs[i].tooltipText;
+				ko.publishing.forcePush(ko.uriparse.localPathToURI(file));
 			}
 		}
 	}
