@@ -7,10 +7,13 @@ if (typeof(extensions.pof) === 'undefined') extensions.pof = {
 };
 
 (function() {
-	var self = this;
+	var self = this,
+		prefs = Components.classes["@mozilla.org/preferences-service;1"]
+		.getService(Components.interfaces.nsIPrefService).getBranch("extensions.pof.");
 	this.publishOpenFiles = () => {
 		var tabsView = document.getElementById('tabbed-view'),
 			tabs = tabsView.getElementsByTagName('tab'),
+			forcePush = prefs.getBoolPref('forcePush'),
 			file;
 		
 		for (var i = 0; i < tabs.length; i++) {
@@ -20,7 +23,7 @@ if (typeof(extensions.pof) === 'undefined') extensions.pof = {
 				file = tabs[i].tooltipText;
 				ko.publishing.push(ko.uriparse.localPathToURI(file));
 			}
-			if (status === 'conflict') {
+			if (status === 'conflict' && forcePush) {
 				file = tabs[i].tooltipText;
 				ko.publishing.forcePush(ko.uriparse.localPathToURI(file));
 			}
